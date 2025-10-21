@@ -24,6 +24,11 @@ class AddRecipeActivity : AppCompatActivity() {
 
         db = RecipeDbHelper(this)
 
+        binding.btnBack.setOnClickListener {
+            finish() // cierra la activity y vuelve a la anterior
+        }
+
+
         // Clic en ImageView para abrir galería
         binding.ivRecipeImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)

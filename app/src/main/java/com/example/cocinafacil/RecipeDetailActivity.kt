@@ -19,11 +19,9 @@ class RecipeDetailActivity : AppCompatActivity() {
         binding = ActivityRecipeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.topAppBar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) // habilita la flecha
-
-        binding.topAppBar.setNavigationOnClickListener {
-            finish() // vuelve a MainActivity
+        // Botón "Atrás" personalizado
+        binding.btnBack.setOnClickListener {
+            finish() // cierra la activity y vuelve a la anterior
         }
 
 // Recuperamos extra enviado desde MainActivity (paso de parámetro entre actividades)

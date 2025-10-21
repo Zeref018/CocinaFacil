@@ -12,6 +12,9 @@
     <string name="ok">OK</string>
     <string name="recipe_image">Imagen de la receta</string>
     <string name="recipe_detail_title">Detalle de receta</string>
+    <string name="back">Atrás</string>
+
+
 
 
 </resources>
