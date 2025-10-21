@@ -4,13 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- ImageView para seleccionar imagen de la receta -->
+        <ImageView
+            android:id="@+id/ivRecipeImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_foreground"
+            android:contentDescription="@string/recipe_image"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTitle"
@@ -18,13 +29,11 @@
             android:layout_height="wrap_content"
             android:hint="@string/label_title">
 
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilIngredients"
@@ -32,7 +41,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/label_ingredients"
             android:layout_marginTop="8dp">
-
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etIngredients"
@@ -42,14 +50,12 @@
                 android:minLines="3" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilInstructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/label_instructions"
             android:layout_marginTop="8dp">
-
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etInstructions"
@@ -58,7 +64,6 @@
                 android:inputType="textMultiLine"
                 android:minLines="4" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <Button
             android:id="@+id/btnSave"

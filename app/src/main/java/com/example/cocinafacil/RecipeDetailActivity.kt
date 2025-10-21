@@ -19,6 +19,12 @@ class RecipeDetailActivity : AppCompatActivity() {
         binding = ActivityRecipeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.topAppBar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // habilita la flecha
+
+        binding.topAppBar.setNavigationOnClickListener {
+            finish() // vuelve a MainActivity
+        }
 
 // Recuperamos extra enviado desde MainActivity (paso de parámetro entre actividades)
         val recipe = intent.getParcelableExtra<Recipe>("recipe")!!
