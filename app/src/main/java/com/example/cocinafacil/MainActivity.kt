@@ -11,53 +11,42 @@ import com.example.cocinafacil.databinding.ActivityMainBinding
 import com.example.cocinafacil.db.RecipeDbHelper
 import com.example.cocinafacil.models.Recipe
 import com.example.cocinafacil.network.RetrofitClient
+import com.example.cocinafacil.network.RecipeResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: RecipeAdapter
     private lateinit var db: RecipeDbHelper
     private lateinit var session: SessionManager
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         setSupportActionBar(binding.topAppBar)
 
-
         session = SessionManager(this)
-// Guardamos un valor de sesión por demo
-        session.setLoggedUser("UsuarioDemonstracion")
-
+        session.setLoggedUser("UsuarioDemostracion")
 
         db = RecipeDbHelper(this)
 
-
         adapter = RecipeAdapter(mutableListOf()) { recipe ->
-// Manejar click (lambda). Pasamos la receta a la activity detalle como extra.
             val i = Intent(this, RecipeDetailActivity::class.java)
             i.putExtra("recipe", recipe)
             startActivity(i)
         }
 
-
         binding.rvRecipes.layoutManager = LinearLayoutManager(this)
         binding.rvRecipes.adapter = adapter
 
-
         binding.fabAdd.setOnClickListener {
-            val i = Intent(this, AddRecipeActivity::class.java)
-            startActivity(i)
+            startActivity(Intent(this, AddRecipeActivity::class.java))
         }
-
 
         binding.topAppBar.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
@@ -66,7 +55,6 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_settings -> {
-// Mostramos un AlertDialog como requisito
                     AlertDialog.Builder(this)
                         .setTitle("Sesión")
                         .setMessage("Usuario: ${session.getLoggedUser()}")
@@ -78,42 +66,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-// Cargar recetas: primero desde DB local, luego API
         loadLocal()
         fetchFromApi()
     }
-
 
     private fun loadLocal() {
         val local = db.getAll()
         if (local.isNotEmpty()) adapter.setData(local)
     }
 
-
     private fun fetchFromApi() {
-// Ejemplo con Retrofit (Call en hilo background manejado por Retrofit)
-        val call = RetrofitClient.instance.getRecipes()
-        call.enqueue(object: Callback<List<Recipe>> {
-            override fun onResponse(call: Call<List<Recipe>>, response: Response<List<Recipe>>) {
+        val call: Call<RecipeResponse> = RetrofitClient.instance.getRecipes()
+        call.enqueue(object : Callback<RecipeResponse> {
+            override fun onResponse(call: Call<RecipeResponse>, response: Response<RecipeResponse>) {
                 if (response.isSuccessful) {
-                    val list = response.body() ?: emptyList()
-// Si API devuelve, actualizamos RecyclerView
-                    if (list.isNotEmpty()) adapter.setData(list)
+                    val apiRecipes: List<Recipe> = response.body()?.recipes?.map { it.toRecipe() } ?: emptyList()
+                    if (apiRecipes.isNotEmpty()) adapter.setData(apiRecipes)
                 }
             }
 
-
-            override fun onFailure(call: Call<List<Recipe>>, t: Throwable) {
-// Podríamos mostrar un mensaje o log
+            override fun onFailure(call: Call<RecipeResponse>, t: Throwable) {
+                t.printStackTrace()
             }
         })
     }
 
-
     override fun onResume() {
         super.onResume()
-// Si venimos de crear receta, recargamos local
         loadLocal()
     }
 }

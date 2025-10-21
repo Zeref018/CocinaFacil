@@ -10,4 +10,6 @@
     <string name="alert_saved_title">Receta guardada</string>
     <string name="alert_saved_message">La receta se ha guardado en local.</string>
     <string name="ok">OK</string>
+    <string name="recipe_image">Imagen de la receta</string>
+
 </resources>

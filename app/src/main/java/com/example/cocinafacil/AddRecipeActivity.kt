@@ -39,7 +39,9 @@ class AddRecipeActivity : AppCompatActivity() {
 
             val r = Recipe(title = title, ingredients = ing, instructions = ins)
             val id = db.insert(r)
-            r.id = id
+            r.id = id.toInt()   // convertir Long a Int
+
+
 
 
 // Almacenamos también en sesión un valor (ej. última receta creada)
