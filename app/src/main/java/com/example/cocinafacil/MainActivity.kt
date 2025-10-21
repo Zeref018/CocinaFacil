@@ -2,6 +2,7 @@ package com.example.cocinafacil
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -48,26 +49,47 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, AddRecipeActivity::class.java))
         }
 
-        binding.topAppBar.setOnMenuItemClickListener { item: MenuItem ->
-            when (item.itemId) {
-                R.id.action_add -> {
-                    startActivity(Intent(this, AddRecipeActivity::class.java))
-                    true
-                }
-                R.id.action_settings -> {
-                    AlertDialog.Builder(this)
-                        .setTitle("Sesión")
-                        .setMessage("Usuario: ${session.getLoggedUser()}")
-                        .setPositiveButton(getString(R.string.ok), null)
-                        .show()
-                    true
-                }
-                else -> false
-            }
-        }
-
         loadLocal()
         fetchFromApi()
+    }
+
+    // Inflar menú con lupa y demás
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_app_bar, menu)
+
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as? androidx.appcompat.widget.SearchView
+
+        searchView?.queryHint = "Buscar receta"
+        searchView?.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return true
+            }
+        })
+
+        return true
+    }
+
+    // Gestionar clicks de menú
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add -> {
+                startActivity(Intent(this, AddRecipeActivity::class.java))
+                true
+            }
+            R.id.action_settings -> {
+                AlertDialog.Builder(this)
+                    .setTitle("Sesión")
+                    .setMessage("Usuario: ${session.getLoggedUser()}")
+                    .setPositiveButton(getString(R.string.ok), null)
+                    .show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun loadLocal() {

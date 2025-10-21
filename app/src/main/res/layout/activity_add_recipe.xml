@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
     android:paddingTop="35dp">
 
     <LinearLayout
@@ -11,77 +12,114 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- ImageView para seleccionar imagen de la receta -->
+        <!-- Botón Back -->
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
-            android:contentDescription="@string/back"
+            android:contentDescription="Volver"
             android:layout_marginBottom="12dp"
-            app:tint="@color/black" />
-        <ImageView
-            android:id="@+id/ivRecipeImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginBottom="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_placeholder"
-            android:contentDescription="@string/recipe_image"
-            android:background="@color/white"
-            android:clickable="true"
-            android:focusable="true" />
+            app:tint="?android:attr/textColorPrimary" />
 
+        <!-- Card con imagen -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/ivRecipeImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_camara"
+                android:contentDescription="Imagen de receta"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Título -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_title">
+            android:hint="Título de la receta"
+            android:layout_marginBottom="12dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:maxLines="2"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Ingredientes -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilIngredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_ingredients"
-            android:layout_marginTop="8dp">
+            android:hint="Ingredientes"
+            android:layout_marginBottom="12dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etIngredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:minLines="3" />
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="3"
+                android:gravity="top|start"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Instrucciones -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilInstructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_instructions"
-            android:layout_marginTop="8dp">
+            android:hint="Instrucciones"
+            android:layout_marginBottom="16dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etInstructions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:minLines="4" />
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="4"
+                android:gravity="top|start"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <!-- Botón Guardar -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_save"
-            android:layout_marginTop="12dp" />
-
+            android:layout_height="56dp"
+            android:text="Guardar Receta"
+            android:textSize="16sp"
+            app:cornerRadius="8dp"
+            android:layout_marginBottom="16dp"/>
 
     </LinearLayout>
 </ScrollView>

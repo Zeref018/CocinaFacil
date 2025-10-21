@@ -1,20 +1,22 @@
 <resources>
-    <string name="app_name">RecetasApp</string>
+    <string name="app_name">Cocina Fácil</string>
     <string name="menu_add">Añadir</string>
     <string name="menu_settings">Ajustes</string>
     <string name="title_recetas">Recetas</string>
-    <string name="label_title">Título</string>
-    <string name="label_ingredients">Ingredientes</string>
-    <string name="label_instructions">Instrucciones</string>
-    <string name="btn_save">Guardar</string>
     <string name="alert_saved_title">Receta guardada</string>
     <string name="alert_saved_message">La receta se ha guardado en local.</string>
     <string name="ok">OK</string>
     <string name="recipe_image">Imagen de la receta</string>
     <string name="recipe_detail_title">Detalle de receta</string>
     <string name="back">Atrás</string>
-
-
+    <string name="add_recipe" />
+    <string name="add_edit_recipe">Nueva Receta</string>
+    <string name="add_photo">Agregar foto</string>
+    <string name="tap_to_add_photo">Toca para añadir foto</string>
+    <string name="label_title">Título de la receta</string>
+    <string name="label_ingredients">Ingredientes</string>
+    <string name="label_instructions">Instrucciones</string>
+    <string name="btn_save">Guardar Receta</string>
 
 
 </resources>

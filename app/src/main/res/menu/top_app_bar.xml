@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Lupa de búsqueda -->
+    <item
+        android:id="@+id/action_search"
+        android:title="Buscar"
+        android:icon="@drawable/ic_search"
+
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+
+    <!-- Botón de añadir -->
     <item
         android:id="@+id/action_add"
         android:title="@string/menu_add"
         android:icon="@android:drawable/ic_input_add"
         app:showAsAction="always" />
+
+    <!-- Configuración -->
     <item
         android:id="@+id/action_settings"
         android:title="@string/menu_settings"

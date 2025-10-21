@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
 
+    <!-- Tema Claro -->
+    <color name="primary_light">#FF6B35</color>
+    <color name="primary_variant_light">#E85A2A</color>
+    <color name="secondary_light">#4CAF50</color>
+    <color name="secondary_variant_light">#388E3C</color>
+
+    <color name="background_light">#F5F5F5</color>
+    <color name="surface_light">#FFFFFF</color>
+
+    <color name="on_primary_light">#FFFFFF</color>
+    <color name="on_secondary_light">#FFFFFF</color>
+    <color name="on_background_light">#212121</color>
+    <color name="on_surface_light">#212121</color>
+
+    <!-- Tema Oscuro -->
+    <color name="primary_dark">#FF8A5B</color>
+    <color name="primary_variant_dark">#FF6B35</color>
+    <color name="secondary_dark">#66BB6A</color>
+    <color name="secondary_variant_dark">#4CAF50</color>
+
+    <color name="background_dark">#121212</color>
+    <color name="surface_dark">#1E1E1E</color>
+
+    <color name="on_primary_dark">#000000</color>
+    <color name="on_secondary_dark">#000000</color>
+    <color name="on_background_dark">#FFFFFF</color>
+    <color name="on_surface_dark">#FFFFFF</color>
+
+    <!-- Colores comunes -->
+    <color name="error">#CF6679</color>
 </resources>
