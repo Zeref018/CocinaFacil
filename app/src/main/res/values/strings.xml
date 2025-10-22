@@ -17,6 +17,9 @@
     <string name="label_ingredients">Ingredientes</string>
     <string name="label_instructions">Instrucciones</string>
     <string name="btn_save">Guardar Receta</string>
+    <string name="edit_recipe" />
+    <string name="instructions_title" />
+    <string name="ingredients_title" />
 
 
 </resources>

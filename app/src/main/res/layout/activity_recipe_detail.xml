@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     android:paddingTop="16dp">
 
     <LinearLayout
@@ -10,6 +11,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!-- Botón Back -->
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="48dp"
@@ -18,34 +20,75 @@
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="@string/back"
             android:layout_marginBottom="12dp"
-            app:tint="@color/black" />
+            app:tint="?attr/colorOnSurface" />
 
-        <ImageView
-            android:id="@+id/ivRecipeImage"
+        <!-- Imagen con card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/recipe_image" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
 
+            <ImageView
+                android:id="@+id/ivRecipeImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/recipe_image" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Título -->
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_marginTop="8dp" />
+            android:textSize="24sp"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
 
+        <!-- Label Ingredientes -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredientes"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorPrimary"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Ingredientes -->
         <TextView
             android:id="@+id/tvIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="?attr/colorOnSurface"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Label Instrucciones -->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:text="Preparación"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorPrimary"
+            android:layout_marginBottom="8dp" />
 
+        <!-- Instrucciones -->
         <TextView
             android:id="@+id/tvInstructions"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:textSize="16sp"
+            android:textColor="?attr/colorOnSurface"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="16dp" />
 
     </LinearLayout>
 </ScrollView>
