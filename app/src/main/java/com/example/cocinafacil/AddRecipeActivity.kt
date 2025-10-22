@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cocinafacil.databinding.ActivityAddRecipeBinding
 import com.example.cocinafacil.db.RecipeDbHelper
 import com.example.cocinafacil.models.Recipe
+import android.graphics.Color
+import android.view.View
 
 class AddRecipeActivity : AppCompatActivity() {
 
@@ -21,6 +23,11 @@ class AddRecipeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Forzar iconos oscuros en la barra de estado
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        // Poner fondo blanco en la barra de estado
+        window.statusBarColor = Color.WHITE
 
         db = RecipeDbHelper(this)
 

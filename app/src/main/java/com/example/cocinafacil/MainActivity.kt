@@ -16,6 +16,8 @@ import com.example.cocinafacil.network.RecipeResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.graphics.Color
+import android.view.View
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +30,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Forzar iconos oscuros en la barra de estado
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        // Poner fondo blanco en la barra de estado
+        window.statusBarColor = Color.WHITE
 
         setSupportActionBar(binding.topAppBar)
 

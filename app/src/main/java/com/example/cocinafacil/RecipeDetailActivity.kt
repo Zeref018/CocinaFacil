@@ -5,7 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cocinafacil.databinding.ActivityRecipeDetailBinding
 import com.example.cocinafacil.models.Recipe
 import com.bumptech.glide.Glide
-
+import android.graphics.Color
+import android.view.View
 
 
 class RecipeDetailActivity : AppCompatActivity() {
@@ -18,6 +19,11 @@ class RecipeDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRecipeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Forzar iconos oscuros en la barra de estado
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        // Poner fondo blanco en la barra de estado
+        window.statusBarColor = Color.WHITE
 
         // Botón "Atrás" personalizado
         binding.btnBack.setOnClickListener {
