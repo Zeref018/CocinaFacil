@@ -1,9 +1,11 @@
 package com.example.cocinafacil
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,13 +13,11 @@ import com.example.cocinafacil.adapter.RecipeAdapter
 import com.example.cocinafacil.databinding.ActivityMainBinding
 import com.example.cocinafacil.db.RecipeDbHelper
 import com.example.cocinafacil.models.Recipe
-import com.example.cocinafacil.network.RetrofitClient
 import com.example.cocinafacil.network.RecipeResponse
+import com.example.cocinafacil.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.graphics.Color
-import android.view.View
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Forzar iconos oscuros en la barra de estado
+        // Forzar iconos oscuros en la barra de estado (modo claro)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         // Poner fondo blanco en la barra de estado
         window.statusBarColor = Color.WHITE
@@ -56,11 +56,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, AddRecipeActivity::class.java))
         }
 
-        loadLocal()
-        fetchFromApi()
+        // Cargar recetas locales y de la API combinadas
+        loadAllRecipes()
     }
 
-    // Inflar menú con lupa y demás
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_app_bar, menu)
 
@@ -80,7 +79,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    // Gestionar clicks de menú
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_add -> {
@@ -99,29 +97,42 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadLocal() {
-        val local = db.getAll()
-        if (local.isNotEmpty()) adapter.setData(local)
-    }
+    /**
+     * Carga las recetas locales y las de la API, y las combina en una sola lista.
+     */
+    private fun loadAllRecipes() {
+        val localRecipes = db.getAll().toMutableList()
 
-    private fun fetchFromApi() {
         val call: Call<RecipeResponse> = RetrofitClient.instance.getRecipes()
         call.enqueue(object : Callback<RecipeResponse> {
             override fun onResponse(call: Call<RecipeResponse>, response: Response<RecipeResponse>) {
                 if (response.isSuccessful) {
                     val apiRecipes: List<Recipe> = response.body()?.recipes?.map { it.toRecipe() } ?: emptyList()
-                    if (apiRecipes.isNotEmpty()) adapter.setData(apiRecipes)
+
+                    // Combinar locales + API
+                    val allRecipes = mutableListOf<Recipe>().apply {
+                        addAll(localRecipes)
+                        addAll(apiRecipes)
+                    }
+
+                    adapter.setData(allRecipes)
+                } else {
+                    // Si falla la respuesta, mostramos solo las locales
+                    adapter.setData(localRecipes)
                 }
             }
 
             override fun onFailure(call: Call<RecipeResponse>, t: Throwable) {
                 t.printStackTrace()
+                // Si no hay internet, mostrar solo las locales
+                adapter.setData(localRecipes)
             }
         })
     }
 
     override fun onResume() {
         super.onResume()
-        loadLocal()
+        // Volver a combinar al regresar (por si se creó una nueva receta)
+        loadAllRecipes()
     }
 }
