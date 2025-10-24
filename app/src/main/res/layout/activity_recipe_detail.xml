@@ -100,16 +100,7 @@
             android:layout_marginTop="16dp"
             android:visibility="gone">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnEdit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Editar"
-                style="?attr/materialButtonOutlinedStyle"
-                app:icon="@drawable/ic_edit"
-                app:iconPadding="8dp"
-                app:iconTint="?attr/colorPrimary" />
+
 
             <View
                 android:layout_width="8dp"

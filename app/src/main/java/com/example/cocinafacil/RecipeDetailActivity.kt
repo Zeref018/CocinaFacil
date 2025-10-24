@@ -71,13 +71,6 @@ class RecipeDetailActivity : AppCompatActivity() {
         }
 
         // Botón editar receta
-        binding.btnEdit.setOnClickListener {
-            recipe?.let { r ->
-                val intent = Intent(this, AddRecipeActivity::class.java).apply {
-                    putExtra("recipeToEdit", r)
-                }
-                startActivity(intent)
-            }
-        }
+
     }
 }
