@@ -88,7 +88,46 @@
             android:textSize="16sp"
             android:textColor="?attr/colorOnSurface"
             android:lineSpacingExtra="4dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="24dp" />
+
+        <!-- Botones Editar y Borrar (solo para recetas locales) -->
+        <LinearLayout
+            android:id="@+id/layoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Editar"
+                style="?attr/materialButtonOutlinedStyle"
+                app:icon="@drawable/ic_edit"
+                app:iconPadding="8dp"
+                app:iconTint="?attr/colorPrimary" />
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDelete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Eliminar"
+                android:textColor="@android:color/white"
+                app:icon="@drawable/ic_delete"
+                app:iconPadding="8dp"
+                app:backgroundTint="?attr/colorError" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 </ScrollView>

@@ -32,13 +32,13 @@ class AddRecipeActivity : AppCompatActivity() {
         db = RecipeDbHelper(this)
 
         binding.btnBack.setOnClickListener {
-            finish() // cierra la activity y vuelve a la anterior
+            finish()
         }
-
 
         // Clic en ImageView para abrir galería
         binding.ivRecipeImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
             intent.type = "image/*"
             startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
@@ -57,26 +57,31 @@ class AddRecipeActivity : AppCompatActivity() {
                 title = title,
                 ingredients = ing,
                 instructions = ins,
-                image = selectedImageUri?.toString() // Guardamos la URI de la imagen
+                image = selectedImageUri?.toString()
             )
 
             val id = db.insert(recipe)
             recipe.id = id
 
-            // Volvemos a MainActivity
             setResult(Activity.RESULT_OK)
             finish()
         }
     }
 
-    // Recogemos el resultado de la galería
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
                 selectedImageUri = uri
-                binding.ivRecipeImage.setImageURI(uri) // Mostramos la imagen
+
+                // 🔒 Mantiene permiso de lectura incluso tras reiniciar la app
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+
+                binding.ivRecipeImage.setImageURI(uri)
             }
         }
     }

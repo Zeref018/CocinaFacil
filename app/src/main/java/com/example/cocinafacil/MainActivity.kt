@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,15 +33,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Forzar iconos oscuros en la barra de estado (modo claro)
+        // Iconos oscuros en la barra de estado (modo claro)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        // Poner fondo blanco en la barra de estado
         window.statusBarColor = Color.WHITE
 
         setSupportActionBar(binding.topAppBar)
 
+        // Inicializar sesión
         session = SessionManager(this)
-        session.setLoggedUser("UsuarioDemostracion")
+        if (!session.isLoggedIn()) {
+            session.setLoggedUser("UsuarioDemostracion")
+        }
+
+        // Mostrar usuario actual en la AppBar
+        binding.topAppBar.subtitle = session.getLoggedUser()
 
         db = RecipeDbHelper(this)
 
@@ -56,10 +63,38 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, AddRecipeActivity::class.java))
         }
 
-        // Cargar recetas locales y de la API combinadas
-        loadAllRecipes()
+        loadRecipes()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadRecipes() // recargar todo al volver
+    }
+
+    /** Carga recetas locales + API */
+    private fun loadRecipes() {
+        val local = db.getAll().toMutableList()
+
+        val call: Call<RecipeResponse> = RetrofitClient.instance.getRecipes()
+        call.enqueue(object : Callback<RecipeResponse> {
+            override fun onResponse(call: Call<RecipeResponse>, response: Response<RecipeResponse>) {
+                if (response.isSuccessful) {
+                    val apiRecipes = response.body()?.recipes?.map { it.toRecipe() } ?: emptyList()
+                    val combined = apiRecipes + local
+                    adapter.setData(combined)
+                } else {
+                    adapter.setData(local)
+                }
+            }
+
+            override fun onFailure(call: Call<RecipeResponse>, t: Throwable) {
+                t.printStackTrace()
+                adapter.setData(local)
+            }
+        })
+    }
+
+    /** Inflar menú con la lupa y ajustes */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_app_bar, menu)
 
@@ -79,60 +114,56 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    /** Manejo de opciones del menú */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_add -> {
                 startActivity(Intent(this, AddRecipeActivity::class.java))
                 true
             }
+
             R.id.action_settings -> {
-                AlertDialog.Builder(this)
-                    .setTitle("Sesión")
-                    .setMessage("Usuario: ${session.getLoggedUser()}")
-                    .setPositiveButton(getString(R.string.ok), null)
-                    .show()
+                showSessionDialog()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    /**
-     * Carga las recetas locales y las de la API, y las combina en una sola lista.
-     */
-    private fun loadAllRecipes() {
-        val localRecipes = db.getAll().toMutableList()
+    /** Diálogo para ver/cambiar usuario o cerrar sesión */
+    private fun showSessionDialog() {
+        val currentUser = session.getLoggedUser() ?: "Ninguno"
 
-        val call: Call<RecipeResponse> = RetrofitClient.instance.getRecipes()
-        call.enqueue(object : Callback<RecipeResponse> {
-            override fun onResponse(call: Call<RecipeResponse>, response: Response<RecipeResponse>) {
-                if (response.isSuccessful) {
-                    val apiRecipes: List<Recipe> = response.body()?.recipes?.map { it.toRecipe() } ?: emptyList()
+        AlertDialog.Builder(this)
+            .setTitle("Sesión")
+            .setMessage("Usuario actual: $currentUser")
+            .setPositiveButton("Cambiar usuario") { _, _ ->
+                val input = EditText(this)
+                input.hint = "Nuevo nombre de usuario"
 
-                    // Combinar locales + API
-                    val allRecipes = mutableListOf<Recipe>().apply {
-                        addAll(localRecipes)
-                        addAll(apiRecipes)
+                AlertDialog.Builder(this)
+                    .setTitle("Cambiar usuario")
+                    .setView(input)
+                    .setPositiveButton("Guardar") { _, _ ->
+                        val newUser = input.text.toString().trim()
+                        if (newUser.isNotEmpty()) {
+                            session.setLoggedUser(newUser)
+                            binding.topAppBar.subtitle = newUser
+                            Toast.makeText(this, "Usuario cambiado a $newUser", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Nombre vacío. No guardado.", Toast.LENGTH_SHORT).show()
+                        }
                     }
-
-                    adapter.setData(allRecipes)
-                } else {
-                    // Si falla la respuesta, mostramos solo las locales
-                    adapter.setData(localRecipes)
-                }
+                    .setNegativeButton("Cancelar", null)
+                    .show()
+            }
+            .setNeutralButton("Cerrar sesión") { _, _ ->
+                session.logout()
+                binding.topAppBar.subtitle = "Invitado"
+                Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onFailure(call: Call<RecipeResponse>, t: Throwable) {
-                t.printStackTrace()
-                // Si no hay internet, mostrar solo las locales
-                adapter.setData(localRecipes)
-            }
-        })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Volver a combinar al regresar (por si se creó una nueva receta)
-        loadAllRecipes()
+            .show()
     }
 }

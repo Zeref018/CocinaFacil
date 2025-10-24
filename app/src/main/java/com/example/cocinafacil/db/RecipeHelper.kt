@@ -49,6 +49,13 @@ class RecipeDbHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         db.close()
         return id.toInt()
     }
+    fun delete(id: Int): Boolean {
+        val db = writableDatabase
+        val rows = db.delete(TABLE_NAME, "$COL_ID = ?", arrayOf(id.toString()))
+        db.close()
+        return rows > 0
+    }
+
 
     fun getAll(): List<Recipe> {
         val db = readableDatabase
